@@ -12,17 +12,39 @@ library (tidyverse)
 Load the penguins dataset.
 ```{r penquins}
 data("penguins", package = "palmerpenguins")
-penguins_df=
-  tibble(
-  summary.data.frame(penguins),
-  ncol(penguins),
-  nrow(penguins)
-)
 
+```
+
+#### Description of the dataset
+Here are the variables of the penguins dataset:
+
+**Species**: The species of the penguin (Adelie, Chinstrap, or Gentoo).
+
+**Island**: The island where the penguin was observed (Biscoe, Dream, or Torgersen).
+
+**Bill_length_mm**: The length of the penguin's bill in millimeters.
+
+**Bill_depth_mm**: The depth of the penguin's bill in millimeters.
+
+**Flipper_length_mm**: The length of the penguin's flipper in millimeters.
+
+**Body_mass_g**: The body mass of the penguin in grams.
+
+**Sex**: The sex of the penguin (male or female)
+
+The data set has `r ncol(penguins)` columns and `r nrow(penguins)` rows.
+
+The mean flipper length is `r mean(penguins$flipper_length_mm, na.rm = TRUE)` milimeters.
+
+```{r penguin_plot, echo = FALSE}
 ggplot(penguins,aes (x=flipper_length_mm, y=bill_length_mm)) +
   geom_point()
 
 
 ggsave("hw1_penguinsplot.pdf")
+
+```
+
+## Problem 2
 
 ```
