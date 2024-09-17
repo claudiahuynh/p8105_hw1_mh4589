@@ -37,7 +37,7 @@ The data set has `r ncol(penguins)` columns and `r nrow(penguins)` rows.
 The mean flipper length is `r mean(penguins$flipper_length_mm, na.rm = TRUE)` milimeters.
 
 ```{r penguin_plot, echo = FALSE}
-ggplot(penguins,aes (x=flipper_length_mm, y=bill_length_mm)) +
+ggplot(penguins,aes (x=flipper_length_mm, y=bill_length_mm, color = species)) +
   geom_point()
 
 
@@ -46,5 +46,6 @@ ggsave("hw1_penguinsplot.pdf")
 ```
 
 ## Problem 2
+
 
 ```
