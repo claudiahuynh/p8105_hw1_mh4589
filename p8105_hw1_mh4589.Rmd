@@ -1,9 +1,10 @@
 ---
 title: "p8105_HW1_mh4589"
+author: "My An Huynh"
 output: github_document
-date: "2024-09-14"
+date: "2024-09-21"
 ---
-```{r libraryverse, message=FALSE}
+```{r library, message = FALSE}
 library (tidyverse)
 ```
 
@@ -16,7 +17,7 @@ data("penguins", package = "palmerpenguins")
 ```
 
 #### Description of the dataset
-Here are the variables of the penguins dataset:
+The penguins dataset contains information on three different penguin species (Adelie, Chinstrap and Gentoo). Here are the important variables of the penguins dataset:
 
 **Species**: The species of the penguin (Adelie, Chinstrap, or Gentoo).
 
@@ -34,12 +35,21 @@ Here are the variables of the penguins dataset:
 
 The data set has `r ncol(penguins)` columns and `r nrow(penguins)` rows.
 
-The mean flipper length is `r mean(penguins$flipper_length_mm, na.rm = TRUE)` milimeters.
+The mean flipper length is `r mean(pull(penguins, flipper_length_mm), na.rm = TRUE)` milimeters.
 
-```{r penguin_plot, echo = FALSE}
-#make a scatterplot with flipper length on x-axis and bill on y-axis. use color = species to categorize by species.
-ggplot(penguins,aes (x=flipper_length_mm, y=bill_length_mm, color = species)) +
-  geom_point()
+The scatterplot was constructed with bill length on x-axis and flipper length on y-axis. I used color = species to categorize by species.
+
+```{r penguin_plot}
+
+
+ggplot(penguins,aes (
+  x=bill_length_mm, 
+  y=flipper_length_mm,
+  color = species)) +
+  geom_point() +
+  labs(title = "Bill Length vs Flipper Length for 3 Penguin Spcies",
+       x = "Bill Length (mm)",
+       y = "Flipper Length (mm)")
 
 
 ggsave("hw1_penguinsplot.pdf")
@@ -47,15 +57,52 @@ ggsave("hw1_penguinsplot.pdf")
 ```
 
 ## Problem 2
+Created a dataframe named rnorm_df with 4 different vectors - norm_samp, logical, character and factor.
+
 ```{r rnorm_df}
 #create a 10x4 data frame. Length is 10. 4 different vectors 
 rnorm_df = 
   tibble (
     norm_samp = rnorm(10),
     vec_logical = norm_samp > 0,
-    vec_character = c("Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6", "Item 7", "Item 8", "Item 9", "Item 10"),
-    vec_factor = factor(sample(c("level 1", "level 2", "level 3"), 10, replace = TRUE)))
-  
-print(rnorm_df)
+    vec_character = c("a","b","c","d","e","f","g","h","i","j"),
+    vec_factor = factor(c("level 1", "level 2", "level 3","level 1", "level 2", "level 3", "level 1","level 1", "level 2", "level 3"))
+)
+```
+
+I used the pull function to calculate the mean. The mean function only works for norm_samp because it is a numeric column, and for vec_logical because TRUE is assigned a value of 1 and FALSE is assigned a value of 0. The mean function does not work on the character and factor vectors. 
+
+```{r mean_rnorm}
+
+mean_norm_samp =  mean(pull(rnorm_df, norm_samp))
+mean_norm_samp
+
+mean_vec_character = mean(pull(rnorm_df, vec_character), na.rm = TRUE)
+mean_vec_character
+
+mean_vec_logical = mean(pull(rnorm_df, vec_logical))
+mean_vec_logical
+
+mean_vec_factor = mean(pull(rnorm_df, vec_factor))
+mean_vec_factor
+```
+
+When I applied the as.numeric function, I was able to calculate the mean for the logical and factor vectors, but not the character vector. This is because the as.numeric function assigns value 1 for TRUE and 0 for FALSE to the logical vector, and it assigns values 1,2,3 for the 3 different levels in the factor vector, but it cannot assign numeric values to characters in the character vector. 
+```{r num_rnorm,  echo = FALSE}
+num_vec_character = as.numeric(pull(rnorm_df, vec_character))
+num_vec_logical = as.numeric(pull(rnorm_df, vec_logical))
+num_vec_factor = as.numeric(pull(rnorm_df, vec_factor))
 
 ```
+
+```{r mean_num_rnorm, echo = FALSE}
+mean_num_char = mean(num_vec_character)
+mean_num_char
+
+mean_num_logical = mean(num_vec_logical)
+mean_num_logical
+
+mean_num_factor = mean(num_vec_factor)
+mean_num_factor
+```
+
